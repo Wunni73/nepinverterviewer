@@ -22,18 +22,19 @@
 #define OLED_RESET -1  
 int SCLpin = D1;
 int SDApin = D2;
-
 Adafruit_SH1106G display = Adafruit_SH1106G(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
-
-
-const char* wifiName = "ssd";
-const char* wifiPass = "pasword";
 char daysOfTheWeek[7][12] = {"Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"};
-//Web Server address to read/write from 
-const char *host = "https://user.nepviewer.com/pv_monitor/proxy/status/xxxxxxxx/0/2/"; //https://user.nepviewer.com/pv_monitor/proxy/status/xxxxxx/0/2/
 
+const char* wifiName = "ssd";               // WIFI ID
+const char* wifiPass = "pasword";           // WIFI Password
+const char* hostid   = "xxxxxxx";           // > Wechselrichter ID <
+
+//Web Server address to read from 
+const char* host1 = "https://user.nepviewer.com/pv_monitor/proxy/status/"; //NEP Server
+const char* host2 = "/0/2/";                                               //NEP Server json 
 
 void setup() {
   
@@ -79,9 +80,12 @@ void loop() {
   std::unique_ptr<BearSSL::WiFiClientSecure>client(new BearSSL::WiFiClientSecure);
   client->setInsecure();
   HTTPClient https;
-  
-  Serial.print("Request Link:");
-  Serial.println(host);
+ Serial.print("Request Link:");
+  String host3 = host1;
+  String host4 = hostid;
+  String host5 = host2;
+  String host = host3 + host4 + host5;
+ Serial.println(host);
   
   https.begin(*client, host); //Specify request destination
      
