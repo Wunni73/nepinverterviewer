@@ -95,7 +95,7 @@ void loop() {
   Serial.print("Returned data from Server:");
   Serial.println(input);                 //Print request response payload
 
-StaticJsonDocument<384> doc;
+StaticJsonDocument<512> doc; // Static Ram
 
 DeserializationError error = deserializeJson(doc, input);
 
